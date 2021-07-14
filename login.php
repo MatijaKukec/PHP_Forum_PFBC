@@ -2,12 +2,13 @@
 
 
 require_once 'PFBC/Form.php';
-require_once 'baza.php';
+include 'baza.php';
 
 session_start();
 
 if (isset($_SESSION['korisnikId'])) header('Location: ./index.php'); 
 $title = "Logiranje"; require_once('header.php'); require_once ('navbar_1.0.php');
+
 
 if(Form::isValid("login", false)) {
         $lozinka = htmlentities(trim($_POST['lozinka']));
@@ -20,13 +21,23 @@ if(Form::isValid("login", false)) {
             if ($result->num_rows) {
                 if($row = $result->fetch_assoc()) {
                     if(password_verify($lozinka, $row['lozinka'])){
+
                         $_SESSION['korisnikId'] = $row['id'];
                         $_SESSION['korisnikIdUid'] = $row['korisnik'];
+
                         if($row['prava']!=NULL&&$row['prava']=11111111111){
                             $_SESSION['prava']= $row['prava'];
                         }
+
+                        if( ($_POST['Remember']==1) || ($_POST['Remember']=='on')) {
+                            $sat = time()+3600 *24;
+                            setcookie('korisnikId', $row['id'], $hour);
+                            setcookie('korisnikIdUid', $row['korisnik'], $hour);
+                            setcookie('active', 1, $hour);
+                        }
+
                         $_SESSION["loginPoruka"] = '<div class="alert alert-success">
-                        <strong>Uspješna prijava! </br></strong>
+                        <strong> Uspješna prijava! </br></strong>
                         </div>';
                         header("Location: ./index.php?login=success");
                         exit();
@@ -45,8 +56,9 @@ if(Form::isValid("login", false)) {
     
 echo "<script> document.getElementById('login').classList.add( 'active'); 
 </script>";
+?>
 
-echo '    
+
 <body class="bg-primary">
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
@@ -55,11 +67,18 @@ echo '
                     <div class="row justify-content-center">
                         <div class="col-lg-5">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
+<?php
+if(isset($_GET['logged'])){
+    if($_GET['logged']=='false'){
+        echo "<strong class='text-center' style='color:Tomato;'>Prvo se morate prijaviti</strong>";
+    }
+}?>
+
                                 <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                                 <div class="card-body">
-';
-                            
+<?php                            
 if(!isset($_POST['predano'])) Form::clearErrors('login');
+
 Form::open('login', '', array("view"=>"sidebyside4"));
 Form::Hidden('predano', 'predavanje');
 Form::Textbox('Korisnik: ', 'korisnik', array('required'=>1, 'validation'=>new Validation_RegExp('/^(?=[a-žA-Ž0-9._\.\-\ ]{3,20}$).*$/i',
@@ -71,8 +90,8 @@ Form::Password('Lozinka: ', 'lozinka', array('required'=>1, 'validation'=>new Va
 Form::Checkbox("", "Remember", array("1" => "Zapamti me"));
 Form::Button("Ulogiraj se",'', array('class' => 'class="w3-button w3-black'));
 Form::close(false);
+?>
 
-echo '                          
                                 </div>
                                 <div class="card-footer text-center">
                                     <div><a href="novi_korisnik.php">Nemaš račun? Registriraj se!</a></div>
@@ -83,6 +102,6 @@ echo '
                 </div>
             </main>
         </div>
-';
+<?php
 require_once('footer.php');
 ?>

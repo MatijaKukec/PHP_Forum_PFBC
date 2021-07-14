@@ -5,7 +5,9 @@ require_once 'PFBC/Form.php';
 require_once 'baza.php';
 session_start();
 
-if (!isset($_SESSION['korisnikId'])) header('Location: ./index.php '.$_SESSION['korisnikIdUid']);
+if(!isset($_SESSION['korisnikId'])) header("Location: ./login.php?logged=false");
+
+//if (!isset($_SESSION['korisnikId'])) header('Location: ./index.php '.$_SESSION['korisnikIdUid']);
 
 $title = "Uređivanje"; require_once('header.php'); include ('navbar.php');
 echo'
@@ -43,14 +45,17 @@ if(Form::IsValid('uredi_korisnik',false))
 if(!isset($_POST['uredeno'])) {
     Form::clearErrors('uredi_korisnik');
     if(isset($_POST["id"])) $id=$_POST["id"];
-    else $id=$_SESSION['korisnikId'];
-    $vadiId=$veza->prepare('SELECT korisnik, avatar FROM korisnici WHERE id=?');
+    else $id=$_SESSION['korisnikId']; 
+    // vade se podaci za korisnika kojemu je id zadani preko $POST
+    $vadiId=$veza->prepare('SELECT korisnik, avatar, vrijeme_reg, dob FROM korisnici WHERE id=?');
     $vadiId->bind_param('i', $id);
     $vadiId->execute();
     $rez = $vadiId->get_result();
     $rezultat = $rez -> fetch_assoc();
     $korisnik=$rezultat['korisnik'];
     $slika=$rezultat['avatar'];
+    $dob = $rezultat['dob'];
+    $vrij_reg = $rezultat['vrijeme_reg'];
     echo '<legend>Uredi korisnika - '. $korisnik .'</legend>';
     echo"<p><img src='slike/" . $slika . "' /></p>";
         
@@ -70,6 +75,14 @@ Form::Hidden('uredeno','uredivanje');
 Form::Textbox('Korisnik: ', 'ime', array("required"=>1, "validation"=>new Validation_RegExp('/^(?=[a-žA-Ž\d\-_\.]{3,30}).*$/i',"%element% mora sadržavati minimalno 3 znakova. Koriste se samo slova... Ostali znakovi interpunkcije nisu dozvoljeni")));
 Form::Password('Lozinka:', 'lozinka', array("validation"=>new Validation_RegExp('/^(?=[a-žA-Ž\d\-_\.]{6,30}).*$/i',"%element% mora sadržavati minimalno 6 znakova. Koriste se samo slova i brojke te _, - i .. Ostali znakovi interpunkcije nisu dozvoljeni.")));
 Form::Password('Ponovite lozinku:', 'ponovljeno');
+echo '<div>';
+    echo $dob;    Form::Date('Dob','dob');
+echo '</div>';
+
+if (isset($vrij_reg)){
+    echo "<div>Vrijeme registracije - ".$vrij_reg. "\t \t \t</div>";
+}
+
 Form::Button('Uredi');
 Form::Button ("Reset", "reset", array("onclick" => 'document.getElementById("myForm").reset();'));
 Form::Button ('Odustani', 'button', array("onclick"=>"location.href='svi_korisnici.php';"));

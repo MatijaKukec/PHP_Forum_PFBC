@@ -26,10 +26,8 @@ if($idProvjera->num_rows !==1){
 }
 
 require_once('header.php');
-include ('navbar.php');
 
 //Ispisivanje naslova
-echo '<h2>Forum</h2></br>';
 
 echo "<script> document.getElementById('index').classList.add('active'); 
 </script>"; 
@@ -37,6 +35,9 @@ echo "<script> document.getElementById('index').classList.add('active');
 if(isset($_SESSION['korisnikId'])) {
   echo 'Dobrodošao, '.$_SESSION['korisnikId'].'!</br>';
 } else header("Location: ./login.php?logged=false");
+
+echo '<h2>Forum</h2></br>';
+include ('navbar.php');
 
 echo '<h3>'.$title.'</h3>';
 

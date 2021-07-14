@@ -5,6 +5,7 @@ session_start();
 require_once('PFBC/Form.php');
 require_once('baza.php');
 
+
 if(isset($_GET['pid'])&&is_numeric($_GET['pid'])&&isset($_GET['id'])&&is_numeric($_GET['id'])){
     $id = $_GET['id'];
     $pid = $_GET['pid'];
@@ -12,6 +13,7 @@ if(isset($_GET['pid'])&&is_numeric($_GET['pid'])&&isset($_GET['id'])&&is_numeric
     die("Error!");
 }
 
+#dohvačanje svih postova
 $postProvjera = $veza->prepare("SELECT * FROM forum_post WHERE post_id=? AND forum_id = ? AND post_tip='o'");
 $postProvjera->bind_param('ii',$pid,$id);
 
@@ -33,10 +35,10 @@ if ($postProvjera->execute()){
 }
 
 require_once('header.php');
-include ('navbar.php');
 
 if(!isset($_SESSION['korisnikId'])) header("Location: ./login.php?logged=false");
 
+include ('navbar.php');
 echo '
 <div id="container" class="gridContainer clearfix">
     <div id="header">

@@ -31,18 +31,18 @@ if(isset($_POST['provjera'])){
 
             $slika=$_FILES['slika'];
 
-            //ako ne postoji upisujemo korisnika
+            //ako ne postoji isto korisničko ime upisujemo korisnika
             if(!$postoji){
                 $dat=uredi_sliku_fun($slika,$forma);
                 $danas=date("d.m.Y");
-                if(isset($_POST['dob'])){
+                if(isset($_POST['dob'])){ // ako je postavljeno dob ispisuje se datum rođenja i upisuje se korisnik
                     $dob=$_POST['dob'];
                     echo "Vaš datum rođenja je ".$dob;
-                    $izjava=$veza->prepare("INSERT INTO korisnici SET korisnik=?, lozinka=?, avatar=?, vrijeme_reg=?, dob=?");
+                    $izjava=$veza->prepare("INSERT INTO korisnici SET korisnik=?, lozinka=?, avatar=?, vrijeme_reg=?, dob=?"); // sa datumom rođenja (dob)
                     $izjava->bind_param('sssss', $korisnik, $lozinka, $dat, $danas, $dob);
                     $dob=$_POST['dob'];
                 } else{
-                    $izjava=$veza->prepare("INSERT INTO korisnici SET korisnik=?, lozinka=?, avatar=?, vrijeme_reg=?");
+                    $izjava=$veza->prepare("INSERT INTO korisnici SET korisnik=?, lozinka=?, avatar=?, vrijeme_reg=?"); // bez datuma rođenja 
                     $izjava->bind_param('ssss', $korisnik, $lozinka, $dat, $danas);
                 }
                 

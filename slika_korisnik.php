@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['korisnikId'])){
-    header('Location:login.php');
+    header('Location:login.php?logged=false');
 } else if (!isset($_POST['id'])){
     header('Location:svi_korisnici.php');
 }

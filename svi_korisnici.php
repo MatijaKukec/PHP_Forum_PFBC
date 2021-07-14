@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-if (!isset($_SESSION['korisnikId'])) {	header('Location: login.php'); }
+if (!isset($_SESSION['korisnikId'])) {	header('Location: login.php?logged=false'); }
 $title="Svi korisnici";
 $pag_el ="korisnici";
 $forma = 'svi_korisnici';
