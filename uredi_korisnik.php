@@ -54,7 +54,9 @@ if(!isset($_POST['uredeno'])) {
     $rezultat = $rez -> fetch_assoc();
     $korisnik=$rezultat['korisnik'];
     $slika=$rezultat['avatar'];
-    $dob = $rezultat['dob'];
+    if($rezultat['dob'] != null){
+        $dob = $rezultat['dob'];
+    }
     $vrij_reg = $rezultat['vrijeme_reg'];
     echo '<legend>Uredi korisnika - '. $korisnik .'</legend>';
     echo"<p><img src='slike/" . $slika . "' /></p>";
@@ -76,7 +78,8 @@ Form::Textbox('Korisnik: ', 'ime', array("required"=>1, "validation"=>new Valida
 Form::Password('Lozinka:', 'lozinka', array("validation"=>new Validation_RegExp('/^(?=[a-žA-Ž\d\-_\.]{6,30}).*$/i',"%element% mora sadržavati minimalno 6 znakova. Koriste se samo slova i brojke te _, - i .. Ostali znakovi interpunkcije nisu dozvoljeni.")));
 Form::Password('Ponovite lozinku:', 'ponovljeno');
 echo '<div>';
-    echo $dob;    Form::Date('Dob','dob');
+    if(isset($dob)) echo $dob; 
+Form::Date('Dob','dob');
 echo '</div>';
 
 if (isset($vrij_reg)){
@@ -88,6 +91,8 @@ Form::Button ("Reset", "reset", array("onclick" => 'document.getElementById("myF
 Form::Button ('Odustani', 'button', array("onclick"=>"location.href='svi_korisnici.php';"));
 Form::close(false);
 
+
+#funkcija za izvršavanja querya
 function izvrši($query){
     if($query->execute()){
         echo '<div class="alert alert-success">Uspješno uređivanje korisnika!</div>';

@@ -44,6 +44,8 @@ echo '<h3>'.$title.'</h3>';
 echo  $_GET['id'];
 
 $redak = $idProvjera->fetch_object();
+
+
 $sql = "SELECT post_id, post_naslov, post_vrijeme FROM forum_post WHERE forum_id=? AND post_tip='o'";
 if($query = $veza->prepare($sql)){
     $query->bind_param('i',$id);
@@ -59,7 +61,20 @@ echo'
         while($query->fetch()){
         echo'
         <tr>
-            <td><a href="view_post.php?pid='. $post_id .'&id=' .$id.'">' . $post_naslov . '</td><td>'.$post_vrijeme.'</td>
+        <td><a href="view_post.php?pid='. $post_id .'&id=' .$id.'">' . $post_naslov . '</td><td>'.$post_vrijeme.'</td>' ;
+        if(isset($_SESSION['korisnikId'])&&isset($_SESSION['prava'])){
+            if($_SESSION['prava']!=NULL&&$SESSION['prava']=11111111111){
+                echo"<td>
+                    <form>
+                    <input type='button' class='btn btn-danger'
+                    name='Obriši'
+                    onClick='izbrisiMe(".$id.")'
+                    value='Obriši'>
+                    </form>
+                    </td>";
+                }
+            }
+        echo '
         </tr>';
         }
     }

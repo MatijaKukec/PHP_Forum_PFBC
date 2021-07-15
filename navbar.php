@@ -1,5 +1,4 @@
-<?php
-echo'
+
 <!-- Navbar-->
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <a class="navbar-brand" href="index.php">Moja stranica</a>
@@ -16,7 +15,8 @@ echo'
   <ul class="navbar-nav ml-auto ml-md-0">
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">';
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <?php
           if(isset($_SESSION['korisnikIdUid'])){
             $kor=$_SESSION['korisnikIdUid'];
             echo '
@@ -32,7 +32,7 @@ echo'
             <div id="example" role="application" style="float:right;width:49%; margin-right:2%">
             <a class="dropdown-item" href="login.php">Login</a>
             </div>';
-          echo'
+          ?>
           </div>
       </li>
   </ul>
@@ -55,8 +55,26 @@ echo'
                   </a>
                   <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                       <nav class="sb-sidenav-menu-nested nav">
-                          <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                          <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                            <?php 
+                                                        
+                            # Dohvaćanje svih postojećih foruma
+                            $poc_upit=("SELECT forum_id, forum_naziv FROM forum"); 
+                            if($upit=$veza->prepare($poc_upit)){
+
+                            $upit->bind_result($f_id, $f_naziv);
+
+                            $upit->execute();
+                            $upit->store_result();
+                            
+                            } else echo $veza->error;
+
+                            if($upit->num_rows !==0){ // provjera da li forumi postoje
+                                while($row = $upit->fetch()){
+                                    echo '
+                                    <a class="nav-link "href="forum.php?id='. $f_id .'">'. $f_naziv .'</a>';
+                                }
+                            }
+                            ?>
                       </nav>
                   </div>
                   <a class="nav-link collapsed" href="view_post.php" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -83,9 +101,9 @@ echo'
                           </a>
                           <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                               <nav class="sb-sidenav-menu-nested nav">
-                                  <a class="nav-link" href="401.html">401 Page</a>
-                                  <a class="nav-link" href="404.html">404 Page</a>
-                                  <a class="nav-link" href="500.html">500 Page</a>
+                                  <a class="nav-link" href="../PFBC/401.html">401 Page</a>
+                                  <a class="nav-link" href="../PFBC/404.html">404 Page</a>
+                                  <a class="nav-link" href="../PFBC/500.html">500 Page</a>
                               </nav>
                           </div>
                       </nav>
@@ -101,17 +119,16 @@ echo'
                   </a>
               </div>
           </div>
-          <div class="sb-sidenav-footer">';
+          <div class="sb-sidenav-footer">
+            <?php
             if(isset($kor)){
               echo'
               <div class="small">Logged in as:</div>'.$kor;
             }
-              echo'
+            ?>
           </div>
       </nav>
   </div>
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid">
-'
-?>

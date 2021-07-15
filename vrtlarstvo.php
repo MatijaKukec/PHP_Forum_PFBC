@@ -10,6 +10,8 @@ require_once('PFBC/Form.php');
 echo "<script> document.getElementById('index').classList.add('active'); 
 </script>"; 
 
+
+  
 include ('navbar.php');
 
 # Ispis poruke dobrodošlice
@@ -18,11 +20,6 @@ if(isset($_SESSION['korisnikId'])) {
                 <header class="major">
                     <h2>Dobrodošli, '.$_SESSION['korisnikIdUid'].'</h2>
                 </header>';
-  if(isset($_GET['login'])){
-    if($_GET['login']=='success'){
-      echo $_SESSION['loginPoruka'];
-    }
-  }
 } //else header("Location: ./login.php?logged=false");
 
 
@@ -44,17 +41,10 @@ if($upit->num_rows !==0){ // provjera da li forumi postoje
     echo '
     <tr>
       <td><a href="forum.php?id='. $f_id .'">'. $f_naziv .'</a></td>
-      <br>
     </tr>';
   }
 }
 echo "</table>";
 
+require_once("footer.php");
 ?>
-<br>
-<center>Dobrodošli u našu stranicu poljoprivrede.</center>
-<center> Ovo je mjesto gdje korisnici mogu razmjeniti svoja </center>
-<center>agrokulturna znanja, vještine i iskustva, </center>
-<center>isto kao i postaviti pitanja koja ih zanimaju.</center>
-
-<?php require_once("footer.php"); ?>

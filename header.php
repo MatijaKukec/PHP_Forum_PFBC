@@ -12,6 +12,9 @@
         if(isset($title)) echo'
         <title>'. $title .'</title>';
         ?>
+        
+		<link rel="stylesheet" href="css/skel.css" />
+		<link rel="stylesheet" href="css/commentBox.css" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
         <link rel=”stylesheet” href=”https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
