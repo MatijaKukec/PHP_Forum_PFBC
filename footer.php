@@ -1,15 +1,17 @@
 <?php 
 
-if(isset($baza)){
-    $baza->close();
+if(isset($veza)){
+    $veza->close();
 }
-echo'           </div>
+
+?>
+           </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Moja Web stranica '.date("Y").'</div>
-                            <div class="align-center">Danas je '. date("d.m.Y") .'</div>
+                            <div class="text-muted">Copyright &copy; <?php echo 'Moja Web stranica '.date("Y");?></div>
+                            <div class="align-center"> <?php echo 'Danas je '. date("d.m.Y"); ?> </div>
                             <div class="footer-icons">
 				                <a href="https://www.facebook.com"><i style="margin-left: 0;margin-top:5px;"class="fa fa-facebook"></i></a>
                                 <a href="https://instagram.com"><i style="margin-left: 0;margin-top:5px" class="fa fa-instagram"></i></a>
@@ -34,5 +36,3 @@ echo'           </div>
         <script src="assets/demo/datatables-demo.js"></script>
     </body>
 </html>
-';
-?>

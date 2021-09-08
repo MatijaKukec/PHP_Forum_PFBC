@@ -34,7 +34,7 @@ echo "<script> document.getElementById('index').classList.add('active');
 
 if(isset($_SESSION['korisnikId'])) {
   echo 'Dobrodošao, '.$_SESSION['korisnikId'].'!</br>';
-} else header("Location: ./login.php?logged=false");
+} //else header("Location: ./login.php?logged=false");
 
 echo '<h2>Forum</h2></br>';
 include ('navbar.php');
